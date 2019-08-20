@@ -13,7 +13,7 @@ def main():
     pygame.display.set_caption("My version of darts game")
 
     # creating a surface on the screen that has a size of 240 x 180
-    screen = pygame.display.set_mode((240, 180))
+    screen = pygame.display.set_mode((1200, 800))
 
     # declaring and initializing to controll when the game is running
     running = True
