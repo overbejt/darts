@@ -18,8 +18,16 @@ def main():
     # declaring and initializing to controll when the game is running
     running = True
 
+    # declaring and initializing an image to hold the koala
+    koala = pygame.image.load("Killer-koala.png").convert()
+    #koala.set_alpha(128)
+
     # game loop
     while(running):
+        # draw the koala to the screen
+        screen.blit(koala, (300, 300))
+        # update the screen
+        pygame.display.flip()
         # handling game events
         for event in pygame.event.get():
             # Only handling quit events
