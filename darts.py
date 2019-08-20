@@ -24,7 +24,7 @@ def main():
         for event in pygame.event.get():
             # Only handling quit events
             if(event.type == pygame.QUIT):
-                # flip "running"
+                # flip "running" off
                 running = False
 
 
