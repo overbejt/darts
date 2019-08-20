@@ -19,21 +19,26 @@ def main():
     running = True
 
     # declaring and initializing an image to hold the koala
-    koala = pygame.image.load("Killer-koala.png").convert()
-    #koala.set_alpha(128)
+    koala = pygame.image.load("Killer-koala.png")
+    # koala.set_alpha(128)
+
+    # color?
+    white = [255, 255, 255]
 
     # game loop
     while(running):
-        # draw the koala to the screen
-        screen.blit(koala, (300, 300))
-        # update the screen
-        pygame.display.flip()
         # handling game events
         for event in pygame.event.get():
             # Only handling quit events
             if(event.type == pygame.QUIT):
                 # flip "running" off
                 running = False
+
+        screen.fill(white)
+        # draw the koala to the screen
+        screen.blit(koala, (600, 400))
+        # update the screen
+        pygame.display.update()
 
 
 # This will make the game run only if it is the main program
