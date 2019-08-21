@@ -2,6 +2,7 @@ import pygame
 
 print("so far so good!")
 
+
 # defining a main function
 
 
@@ -18,9 +19,10 @@ def main():
     # declaring and initializing to controll when the game is running
     running = True
 
-    # declaring and initializing an image to hold the koala
-    koala = pygame.image.load("Killer-koala.png")
-    # koala.set_alpha(128)
+    # initializing the main character
+    koala = pygame.image.load("Killer-koala.png").convert_alpha()
+    kx = 600
+    ky = 650
 
     # color?
     white = [255, 255, 255]
@@ -36,7 +38,7 @@ def main():
 
         screen.fill(white)
         # draw the koala to the screen
-        screen.blit(koala, (600, 400))
+        screen.blit(koala, (kx, ky))
         # update the screen
         pygame.display.update()
 
