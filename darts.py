@@ -39,6 +39,18 @@ def main():
                 running = False
             # Check if a button was clicked
             if(event.type == pygame.KEYDOWN):
+                print(event.key)
+                # Check if left arrow hit
+                if(event.key == pygame.K_LEFT):
+                    print("The left arrow key was pressed!")
+                    # Move the koala left
+                    kx = updateKoala(kx, -15)
+                # Check if the right arrow hit
+                if(event.key == pygame.K_RIGHT):
+                    print("The right arrow key was pressed!")
+                    kx = updateKoala(kx, 15)
+            if(event.type == pygame.KEYUP):
+                print(event.key)
                 # Check if left arrow hit
                 if(event.key == pygame.K_LEFT):
                     print("The left arrow key was pressed!")
