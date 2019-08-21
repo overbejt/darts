@@ -3,9 +3,11 @@ import pygame
 print("so far so good!")
 
 
+def updateKoala(prevX):
+    return prevX + 10
+
+
 # defining a main function
-
-
 def main():
 
     # initializing a pygame module
@@ -35,6 +37,11 @@ def main():
             if(event.type == pygame.QUIT):
                 # flip "running" off
                 running = False
+            # Check if a button was clicked
+            if(event.type == pygame.KEYDOWN):
+                # Check if left arrow hit
+                if(event.key & pygame.K_LEFT):
+                    print("The left arrow key was pressed!")
 
         screen.fill(white)
         # draw the koala to the screen
