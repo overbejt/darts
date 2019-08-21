@@ -48,18 +48,10 @@ def main():
                 # Check if left arrow hit
                 if(event.key == pygame.K_LEFT):
                     # Move the koala left
-                    kx = updateKoala(kx, -15)
+                    kx = updateKoala(kx, -30)
                 # Check if the right arrow hit
                 if(event.key == pygame.K_RIGHT):
-                    kx = updateKoala(kx, 15)
-            if(event.type == pygame.KEYUP):
-                # Check if left arrow hit
-                if(event.key == pygame.K_LEFT):
-                    # Move the koala left
-                    kx = updateKoala(kx, -15)
-                # Check if the right arrow hit
-                if(event.key == pygame.K_RIGHT):
-                    kx = updateKoala(kx, 15)
+                    kx = updateKoala(kx, 30)
 
         screen.fill(white)
         # draw the koala to the screen
