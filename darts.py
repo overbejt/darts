@@ -16,6 +16,11 @@ def updateKoala(prevX, direction):
 # defining a main function
 def main():
 
+    # frame rate
+    fps = 35
+    # clocks
+    clock = pygame.time.Clock()
+
     # initializing a pygame module
     pygame.init()
     # setting the caption
@@ -58,6 +63,8 @@ def main():
         screen.blit(koala, (kx, ky))
         # update the screen
         pygame.display.update()
+        # increment the clock
+        clock.tick(fps)
 
 
 # This will make the game run only if it is the main program
