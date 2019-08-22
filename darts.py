@@ -57,6 +57,8 @@ def main():
     koala = pygame.image.load("Killer-koala.png").convert_alpha()
     # initializing the coconut
     coconut = pygame.image.load("coconut.png").convert_alpha()
+    # initializing the background
+    background = pygame.image.load("jungle.png").convert()
 
     # cooridinates
     kx = 600    # koala x
@@ -67,7 +69,7 @@ def main():
     # color?
     white = [255, 255, 255]
 
-    # start the theme song
+    # start the theme song and loop it
     pygame.mixer.music.play(-1)
 
     # game loop
@@ -89,7 +91,8 @@ def main():
                 if(event.key == pygame.K_RIGHT):
                     kx = updateKoala(kx, 35)
 
-        screen.fill(white)
+        # screen.fill(white)
+        screen.blit(background, (0, 0))
         # draw the koala to the screen
         screen.blit(koala, (kx, ky))
 
