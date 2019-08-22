@@ -58,7 +58,7 @@ def main():
     # initializing the coconut
     coconut = pygame.image.load("coconut.png").convert_alpha()
     # initializing the background
-    background = pygame.image.load("jungle.png").convert()
+    background = pygame.image.load("jungle-landscape.png").convert()
 
     # cooridinates
     kx = 600    # koala x
