@@ -3,6 +3,9 @@ import random
 
 print("so far so good!")
 
+display_width = 1200
+display_height = 647
+
 
 def updateKoala(prevX, direction):
     result = prevX + direction
@@ -19,7 +22,7 @@ def updateCoconut(prevX, prevY):
     result = [prevX, prevY]
 
     # check if off the screen
-    if(prevY < 800):
+    if(prevY < display_height):
         result[1] += 35
     else:
         # need random math for x movement
@@ -48,7 +51,7 @@ def main():
     pygame.mixer.music.load("SwayThisWay.wav")
 
     # creating a surface on the screen that has a size of 240 x 180
-    screen = pygame.display.set_mode((1200, 800))
+    screen = pygame.display.set_mode((display_width, display_height))
 
     # declaring and initializing to controll when the game is running
     running = True
@@ -58,11 +61,11 @@ def main():
     # initializing the coconut
     coconut = pygame.image.load("coconut.png").convert_alpha()
     # initializing the background
-    background = pygame.image.load("jungle-landscape.png").convert()
+    background = pygame.image.load("jungle-palm-trees.png").convert()
 
     # cooridinates
     kx = 600    # koala x
-    ky = 650    # koala y
+    ky = display_height - 125    # koala y
     cx = 600    # coconut x
     cy = 0      # coconut y
 
