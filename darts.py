@@ -35,15 +35,17 @@ def updateCoconut(prevX, prevY):
 # defining a main function
 def main():
 
-    # frame rate
-    fps = 35
-    # clocks
-    clock = pygame.time.Clock()
-
     # initializing a pygame module
     pygame.init()
     # setting the caption
     pygame.display.set_caption("My version of darts game")
+
+    # frame rate
+    fps = 35
+    # clocks
+    clock = pygame.time.Clock()
+    # theme song
+    pygame.mixer.music.load("SwayThisWay.wav")
 
     # creating a surface on the screen that has a size of 240 x 180
     screen = pygame.display.set_mode((1200, 800))
@@ -65,8 +67,12 @@ def main():
     # color?
     white = [255, 255, 255]
 
+    # start the theme song
+    pygame.mixer.music.play(-1)
+
     # game loop
     while(running):
+
         # handling game events
         for event in pygame.event.get():
             # Only handling quit events
