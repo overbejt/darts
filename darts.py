@@ -19,7 +19,11 @@ def updateCoconut(prevX, prevY):
 
     # check if off the screen
     if(prevY < 800):
-        result[1] += 15
+        result[1] += 35
+    else:
+        # need random math for x movement
+        # update y coordinate
+        result[1] = 0
 
     return result
 
