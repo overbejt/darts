@@ -13,6 +13,17 @@ def updateKoala(prevX, direction):
         return result
 
 
+def updateCoconut(prevX, prevY):
+    # initialize an array
+    result = [prevX, prevY]
+
+    # check if off the screen
+    if(prevY < 800):
+        result[1] += 15
+
+    return result
+
+
 # defining a main function
 def main():
 
@@ -36,6 +47,8 @@ def main():
     koala = pygame.image.load("Killer-koala.png").convert_alpha()
     # initializing the coconut
     coconut = pygame.image.load("coconut.png").convert_alpha()
+
+    # cooridinates
     kx = 600    # koala x
     ky = 650    # koala y
     cx = 600    # coconut x
@@ -65,6 +78,11 @@ def main():
         screen.fill(white)
         # draw the koala to the screen
         screen.blit(koala, (kx, ky))
+
+        # update coordinates of coconut
+        coconutCoords = updateCoconut(cx, cy)
+        cx = coconutCoords[0]
+        cy = coconutCoords[1]
         # draw the coconut to the screen
         screen.blit(coconut, (cx, cy))
         # update the screen
