@@ -1,4 +1,5 @@
 import pygame
+import random
 
 print("so far so good!")
 
@@ -22,6 +23,9 @@ def updateCoconut(prevX, prevY):
         result[1] += 35
     else:
         # need random math for x movement
+        # result[0] = 0
+        # result[0] = 1118
+        result[0] = random.randint(0, 1118)
         # update y coordinate
         result[1] = 0
 
@@ -74,10 +78,10 @@ def main():
                 # Check if left arrow hit
                 if(event.key == pygame.K_LEFT):
                     # Move the koala left
-                    kx = updateKoala(kx, -30)
+                    kx = updateKoala(kx, -35)
                 # Check if the right arrow hit
                 if(event.key == pygame.K_RIGHT):
-                    kx = updateKoala(kx, 30)
+                    kx = updateKoala(kx, 35)
 
         screen.fill(white)
         # draw the koala to the screen
@@ -89,6 +93,7 @@ def main():
         cy = coconutCoords[1]
         # draw the coconut to the screen
         screen.blit(coconut, (cx, cy))
+
         # update the screen
         pygame.display.update()
         # increment the clock
