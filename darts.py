@@ -34,8 +34,12 @@ def main():
 
     # initializing the main character
     koala = pygame.image.load("Killer-koala.png").convert_alpha()
-    kx = 600
-    ky = 650
+    # initializing the coconut
+    coconut = pygame.image.load("coconut.png").convert_alpha()
+    kx = 600    # koala x
+    ky = 650    # koala y
+    cx = 600    # coconut x
+    cy = 0      # coconut y
 
     # color?
     white = [255, 255, 255]
@@ -61,6 +65,8 @@ def main():
         screen.fill(white)
         # draw the koala to the screen
         screen.blit(koala, (kx, ky))
+        # draw the coconut to the screen
+        screen.blit(coconut, (cx, cy))
         # update the screen
         pygame.display.update()
         # increment the clock
