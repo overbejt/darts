@@ -3,6 +3,7 @@ import random
 
 print("so far so good!")
 
+# Defining global variables
 display_width = 1200
 display_height = 647
 
@@ -11,6 +12,8 @@ display_height = 647
 # Koala.  It will also do bounds checking to keep the koala #
 # on the screen.                                            #
 #***********************************************************#
+
+
 def updateKoala(prevX, direction):
     result = prevX + direction
     if(result < 0):
@@ -26,7 +29,6 @@ def updateKoala(prevX, direction):
 # This is the method that will update to coordinates of a   #
 # coconut.                                                  #
 #***********************************************************#
-
 def updateCoconut(prevX, prevY):
     # initialize an array
     result = [prevX, prevY]
@@ -44,7 +46,24 @@ def updateCoconut(prevX, prevY):
 
     return result
 
-#************ end of 'updateCoconut' method *******************
+#********** end of 'updateCoconut' method *******************
+
+#***********************************************************#
+# This is the method that will check to see if there is a   #
+# colision between the coconut and the koala.  When there   #
+# is a colision, this method will return true.  When there  #
+# is not a colision, this method will return false.  It     #
+# will take in 3 integers.  The X and Y coordinates of the  #
+# coconut.  And the X coordinate of the koala.              #
+#***********************************************************#
+def collisionCheck(cx, cy, kx):
+    if(cy < 125):
+        return False
+    elif(cx >= kx & & cx <= (kx + 125)):
+        return True
+    else:
+        return False
+#******* End of the 'collisionCheck' method *****************
 
 
 #***********************************************************#
