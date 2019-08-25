@@ -65,6 +65,14 @@ def collisionCheck(cx, cy, kx):
         return False
 #******* End of the 'collisionCheck' method *****************
 
+#***********************************************************#
+# This is the method that will handle when a colision has   #
+# occured.                                                  #
+#***********************************************************#
+def handleColision():
+    pygame.mixer.Sound.play()
+#******* End of the 'handleColision' method *****************
+
 
 #***********************************************************#
 # This is the main method.  It will contain the game loop.  #
@@ -84,6 +92,8 @@ def main():
     clock = pygame.time.Clock()
     # theme song
     pygame.mixer.music.load("SwayThisWay.wav")
+    # collision sound
+    pygame.mixer.Sound.load("collision.wav")
 
     # creating a surface on the screen that has a size of 240 x 180
     screen = pygame.display.set_mode((display_width, display_height))
