@@ -6,7 +6,11 @@ print("so far so good!")
 display_width = 1200
 display_height = 647
 
-
+#***********************************************************#
+# This is the method that will update the coordinates of    #
+# Koala.  It will also do bounds checking to keep the koala #
+# on the screen.                                            #
+#***********************************************************#
 def updateKoala(prevX, direction):
     result = prevX + direction
     if(result < 0):
@@ -15,7 +19,13 @@ def updateKoala(prevX, direction):
         return 1075
     else:
         return result
+#************ end of 'updateKoala' method *******************
 
+
+#***********************************************************#
+# This is the method that will update to coordinates of a   #
+# coconut.                                                  #
+#***********************************************************#
 
 def updateCoconut(prevX, prevY):
     # initialize an array
@@ -33,6 +43,8 @@ def updateCoconut(prevX, prevY):
         result[1] = 0
 
     return result
+
+#************ end of 'updateCoconut' method *******************
 
 
 # defining a main function
@@ -110,6 +122,8 @@ def main():
         pygame.display.update()
         # increment the clock
         clock.tick(fps)
+
+#**************** end of 'main' ****************************
 
 
 # This will make the game run only if it is the main program
