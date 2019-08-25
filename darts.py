@@ -56,6 +56,8 @@ def updateCoconut(prevX, prevY):
 # will take in 3 integers.  The X and Y coordinates of the  #
 # coconut.  And the X coordinate of the koala.              #
 #***********************************************************#
+
+
 def collisionCheck(cx, cy, kx):
     if(cy < (display_height - 125)):
         return False
@@ -87,36 +89,36 @@ def main():
     pygame.init()
 
     pygame.mixer.music.load("SwayThisWay.wav")
-    sound=pygame.mixer.Sound("collision.wav")
+    sound = pygame.mixer.Sound("collision.wav")
     # setting the caption
     pygame.display.set_caption("Krazy Koala")
 
     # frame rate
-    fps=35
+    fps = 35
     # clocks
-    clock=pygame.time.Clock()
+    clock = pygame.time.Clock()
 
     # creating a surface on the screen that has a size of 240 x 180
-    screen=pygame.display.set_mode((display_width, display_height))
+    screen = pygame.display.set_mode((display_width, display_height))
 
     # declaring and initializing to controll when the game is running
-    running=True
+    running = True
 
     # initializing the main character
-    koala=pygame.image.load("Killer-koala.png").convert_alpha()
+    koala = pygame.image.load("Killer-koala.png").convert_alpha()
     # initializing the coconut
-    coconut=pygame.image.load("coconut.png").convert_alpha()
+    coconut = pygame.image.load("coconut.png").convert_alpha()
     # initializing the background
-    background=pygame.image.load("jungle-palm-trees.png").convert()
+    background = pygame.image.load("jungle-palm-trees.png").convert()
 
     # cooridinates
-    kx=600    # koala x
-    ky=display_height - 125    # koala y
-    cx=600    # coconut x
-    cy=0      # coconut y
+    kx = 600    # koala x
+    ky = display_height - 125    # koala y
+    cx = 600    # coconut x
+    cy = 0      # coconut y
 
     # color?
-    white=[255, 255, 255]
+    white = [255, 255, 255]
 
     # start the theme song and loop it
     pygame.mixer.music.play(-1)
@@ -134,16 +136,16 @@ def main():
             # Only handling quit events
             if(event.type == pygame.QUIT):
                 # flip "running" off
-                running=False
+                running = False
             # Check if a button was clicked
             if(event.type == pygame.KEYDOWN):
                 # Check if left arrow hit
                 if(event.key == pygame.K_LEFT):
                     # Move the koala left
-                    kx=updateKoala(kx, -35)
+                    kx = updateKoala(kx, -35)
                 # Check if the right arrow hit
                 if(event.key == pygame.K_RIGHT):
-                    kx=updateKoala(kx, 35)
+                    kx = updateKoala(kx, 35)
 
         # screen.fill(white)
         screen.blit(background, (0, 0))
@@ -151,9 +153,9 @@ def main():
         screen.blit(koala, (kx, ky))
 
         # update coordinates of coconut
-        coconutCoords=updateCoconut(cx, cy)
-        cx=coconutCoords[0]
-        cy=coconutCoords[1]
+        coconutCoords = updateCoconut(cx, cy)
+        cx = coconutCoords[0]
+        cy = coconutCoords[1]
         # draw the coconut to the screen
         screen.blit(coconut, (cx, cy))
 
