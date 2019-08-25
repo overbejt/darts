@@ -47,7 +47,11 @@ def updateCoconut(prevX, prevY):
 #************ end of 'updateCoconut' method *******************
 
 
-# defining a main function
+#***********************************************************#
+# This is the main method.  It will contain the game loop.  #
+# It will also check and handle all of the events from      #
+# pygame.                                                   #
+#***********************************************************#
 def main():
 
     # initializing a pygame module
