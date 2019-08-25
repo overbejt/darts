@@ -56,13 +56,14 @@ def updateCoconut(prevX, prevY):
 # will take in 3 integers.  The X and Y coordinates of the  #
 # coconut.  And the X coordinate of the koala.              #
 #***********************************************************#
-
-
 def collisionCheck(cx, cy, kx):
     if(cy < (display_height - 125)):
         return False
-    elif(cx >= kx & cx <= (kx + 125)):
-        return True
+    elif(cx >= kx):
+        if(cx <= (kx + 125)):
+            return True
+        else:
+            return False
     else:
         return False
 #******* End of the 'collisionCheck' method *****************
