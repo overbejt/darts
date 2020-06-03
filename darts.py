@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pygame
 import random
 
@@ -56,6 +57,8 @@ def updateCoconut(prevX, prevY):
 # will take in 3 integers.  The X and Y coordinates of the  #
 # coconut.  And the X coordinate of the koala.              #
 #***********************************************************#
+
+
 def collisionCheck(cx, cy, kx):
     if(cy < (display_height - 125)):
         return False
