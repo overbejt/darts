@@ -1,5 +1,6 @@
 import pygame
 import random
+import time 
 
 print("so far so good!")
 
@@ -134,7 +135,7 @@ def main():
     # cooridinates
     kx = 600    # koala x
     ky = display_height - 125    # koala y
-    cx = 600    # coconut x
+    cx = 400    # coconut x
     cy = 0      # coconut y
 
     # color?
@@ -171,6 +172,9 @@ def main():
                 # Check if they want to pause the game
                 if(event.key == pygame.K_SPACE):
                     togglePause(pygame.mixer.music)
+                # Check if they want to quit the game
+                if(event.key == pygame.K_ESCAPE):
+                    running = False
 
         if is_paused is False:
             # screen.fill(white)
@@ -184,6 +188,10 @@ def main():
             cy = coconutCoords[1]
             # draw the coconut to the screen
             screen.blit(coconut, (cx, cy))
+        else:
+            # Do not create a tightly wound loop 
+            # and bind the cpu
+            time.sleep(0.1)
 
         # update the screen
         pygame.display.update()
