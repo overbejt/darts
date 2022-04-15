@@ -1,3 +1,4 @@
+from calendar import c
 from socket import INADDR_LOOPBACK
 import pygame
 import random
@@ -27,6 +28,8 @@ COCONUT_INIT_X = 400
 COCONUT_INIT_Y = 0
 
 LIFE_COUNT_INIT = 10
+FPS = 35
+COUNTDOWN_INIT = FPS * 4
 
 #***********************************************************#
 # This method is responsible for puase/unpuase of the game. #
@@ -51,7 +54,26 @@ def displayPaused(screen, font):
     x = (display_width / 2) - 200
     y = (display_height / 2) - 255
     screen.blit(pause_msg, (x, y))
-#************ end of 'displayPaused' method ******************
+#************ end of 'displayPaused' method *****************
+
+#***********************************************************#
+# I want the user to get a countdown when the game starts.  #
+# So that they can get themselves ready.                    #
+#***********************************************************#
+def drawCountdown(screen, font, countdown):
+    x = (display_width / 2) - 80
+    y = (display_height / 2) - 255
+    countdown_val = countdown // FPS
+    if countdown_val >= 1:
+        countdown_msg = font.render('{}...'.format(countdown_val), True, BLACK)
+    elif countdown_val < 1:
+        x = x - 20
+        countdown_val = 'GO'
+        countdown_msg = font.render('{}!'.format(countdown_val), True, BLACK)
+    screen.blit(countdown_msg, (x, y))
+    countdown = countdown - 1
+    return countdown
+#************ end of 'drawCountdown' method *****************
 
 #***********************************************************#
 # This method draws the users score.                        #
@@ -80,7 +102,7 @@ def drawLives(screen, font, livesCount):
 #***********************************************************#
 # This method will draw the game over message on the screen #
 #***********************************************************#
-def drawGameOver(pygame, screen, font):
+def drawGameOver(screen, font):
     game_over_msg = font.render('Game Over', True, BLACK)
     x = (display_width / 2) - 300
     y = (display_height / 2) - 255
@@ -228,8 +250,6 @@ def main():
     # setting the caption
     pygame.display.set_caption("Krazy Koala")
 
-    # frame rate
-    fps = 35
     # for capturing the time delta
     delta_t = 0
     # clocks
@@ -242,6 +262,9 @@ def main():
     running = True
     global is_paused
     is_paused = False
+
+    # for the countdown
+    countdown = COUNTDOWN_INIT
 
     # keep track of the score
     score = 0
@@ -260,6 +283,7 @@ def main():
     # initializing fonts
     pause_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
     game_over_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
+    countdown_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
     score_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
     lives_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
     fps_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
@@ -325,34 +349,38 @@ def main():
                             cy = COCONUT_INIT_X
                             life_count = LIFE_COUNT_INIT
                             score = 0
+                            countdown = COUNTDOWN_INIT
                             pygame.mixer.music.play(-1)                            
                     # Check if they want to quit
                     if buttons[QUIT_BTN] is not None:
                         if(btnClicked(mx, my, buttons[QUIT_BTN])):                        
                             sys.exit()
 
-
         if is_paused is False and life_count > 0:
             screen.blit(background, (0, 0))
             # draw the koala to the screen
             screen.blit(koala, (kx, ky))
 
-            # update coordinates of coconut
-            coconutCoords = updateCoconut(cx, cy)
-            cx = coconutCoords[0]
-            cy = coconutCoords[1]
-            # draw the coconut to the screen
-            screen.blit(coconut, (cx, cy))
+            if countdown > 0:
+                # draw the countdown
+                countdown = drawCountdown(screen, countdown_font, countdown)
+            else:
+                # update coordinates of coconut
+                coconutCoords = updateCoconut(cx, cy)
+                cx = coconutCoords[0]
+                cy = coconutCoords[1]
+                # draw the coconut to the screen
+                screen.blit(coconut, (cx, cy))
 
-            # check if the score should increment
-            if (cy == 0):
-                if is_koala_hit is False:
-                    score = score + 1
-                # reset the koala hit flag
-                is_koala_hit = False
+                # check if the score should increment
+                if (cy == 0):
+                    if is_koala_hit is False:
+                        score = score + 1
+                    # reset the koala hit flag
+                    is_koala_hit = False
         elif is_paused is False and life_count == 0:
             # check if the game is over
-            drawGameOver(pygame, screen, game_over_font)
+            drawGameOver(screen, game_over_font)
             buttons[PLAY_AGAIN_BTN] = drawPlayAgainBtn(pygame, screen, play_again_font)
             buttons[QUIT_BTN] = drawQuitBtn(pygame, screen, quit_font)
             pygame.mixer.music.pause()
@@ -375,7 +403,7 @@ def main():
         # update the screen
         pygame.display.update()
         # increment the clock
-        delta_t = clock.tick(fps)
+        delta_t = clock.tick(FPS)
 
 #**************** end of 'main' ****************************
 
