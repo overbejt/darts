@@ -1,3 +1,4 @@
+from socket import INADDR_LOOPBACK
 import pygame
 import random
 import time 
@@ -18,6 +19,14 @@ WHITE = (255, 255, 255)
 # Reserved Btn Keywords
 PLAY_AGAIN_BTN = 'playAgain'
 QUIT_BTN = 'quit'
+
+# Initial coordinates
+KOALA_INIT_X = 600
+KOALA_INIT_Y = display_height - 125
+COCONUT_INIT_X = 400
+COCONUT_INIT_Y = 0
+
+LIFE_COUNT_INIT = 10
 
 #***********************************************************#
 # This method is responsible for puase/unpuase of the game. #
@@ -237,7 +246,7 @@ def main():
     # keep track of the score
     score = 0
     # keep track of the lives
-    life_count = 10  # TODO update some day?
+    life_count = LIFE_COUNT_INIT
     # for keeping track of if the score needs updated
     is_koala_hit = False
 
@@ -262,10 +271,10 @@ def main():
 
 
     # cooridinates
-    kx = 600    # koala x
-    ky = display_height - 125    # koala y
-    cx = 400    # coconut x
-    cy = 0      # coconut y
+    kx = KOALA_INIT_X
+    ky = KOALA_INIT_Y
+    cx = COCONUT_INIT_X
+    cy = COCONUT_INIT_X
 
     # start the theme song and loop it
     pygame.mixer.music.play(-1)
@@ -309,8 +318,14 @@ def main():
                     # Check if they want to play again
                     if buttons[PLAY_AGAIN_BTN] is not None:
                         if(btnClicked(mx, my, buttons[PLAY_AGAIN_BTN])):
-                            del buttons[PLAY_AGAIN_BTN]
-                            main() # Restart
+                            del buttons[PLAY_AGAIN_BTN]                            
+                            kx = KOALA_INIT_X
+                            ky = KOALA_INIT_Y
+                            cx = COCONUT_INIT_X
+                            cy = COCONUT_INIT_X
+                            life_count = LIFE_COUNT_INIT
+                            score = 0
+                            pygame.mixer.music.play(-1)                            
                     # Check if they want to quit
                     if buttons[QUIT_BTN] is not None:
                         if(btnClicked(mx, my, buttons[QUIT_BTN])):                        
