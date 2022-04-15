@@ -6,7 +6,19 @@ print("so far so good!")
 # Defining global variables
 display_width = 1200
 display_height = 647
+global is_paused 
+is_paused = False
 
+def togglePause(music):
+    # TODO put a pause message on the screen
+    global is_paused
+    is_paused = not is_paused
+
+    # Toggle the music too
+    if is_paused is True:
+        music.pause()
+    else:
+        music.unpause()
 
 #***********************************************************#
 # This is the method that will update the coordinates of    #
@@ -106,6 +118,8 @@ def main():
 
     # declaring and initializing to controll when the game is running
     running = True
+    global is_paused
+    is_paused = False
 
     # initializing the main character
     koala = pygame.image.load("Killer-koala.png").convert_alpha()
@@ -138,29 +152,35 @@ def main():
         for event in pygame.event.get():
             # Only handling quit events
             if(event.type == pygame.QUIT):
-                # flip "running" off
+                # toggle "running" off
                 running = False
             # Check if a button was clicked
             if(event.type == pygame.KEYDOWN):
-                # Check if left arrow hit
-                if(event.key == pygame.K_LEFT):
-                    # Move the koala left
-                    kx = updateKoala(kx, -35)
-                # Check if the right arrow hit
-                if(event.key == pygame.K_RIGHT):
-                    kx = updateKoala(kx, 35)
+                # Only update the Koala if the game is not paused
+                if is_paused is False:
+                    # Check if left arrow hit
+                    if(event.key == pygame.K_LEFT):
+                        # Move the koala left
+                        kx = updateKoala(kx, -35)
+                    # Check if the right arrow hit
+                    if(event.key == pygame.K_RIGHT):
+                        kx = updateKoala(kx, 35)
+                # Check if they want to pause the game
+                if(event.key == pygame.K_SPACE):
+                    togglePause(pygame.mixer.music)
 
-        # screen.fill(white)
-        screen.blit(background, (0, 0))
-        # draw the koala to the screen
-        screen.blit(koala, (kx, ky))
+        if is_paused is False:
+            # screen.fill(white)
+            screen.blit(background, (0, 0))
+            # draw the koala to the screen
+            screen.blit(koala, (kx, ky))
 
-        # update coordinates of coconut
-        coconutCoords = updateCoconut(cx, cy)
-        cx = coconutCoords[0]
-        cy = coconutCoords[1]
-        # draw the coconut to the screen
-        screen.blit(coconut, (cx, cy))
+            # update coordinates of coconut
+            coconutCoords = updateCoconut(cx, cy)
+            cx = coconutCoords[0]
+            cy = coconutCoords[1]
+            # draw the coconut to the screen
+            screen.blit(coconut, (cx, cy))
 
         # update the screen
         pygame.display.update()
