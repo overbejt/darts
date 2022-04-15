@@ -35,7 +35,55 @@ def displayPaused(screen, font):
     x = (display_width / 2) - 200
     y = (display_height / 2) - 255
     screen.blit(pause_msg, (x, y))
-#************ end of 'displayPaused' method ******************    
+#************ end of 'displayPaused' method ******************
+
+#***********************************************************#
+# This method draws the users score.                        #
+#***********************************************************#
+def drawScore(screen, font, score):
+    score_color = (0, 0, 0)
+    score_msg = font.render("Score: {}".format(score), True, score_color)
+    x = 40
+    y = 25
+    screen.blit(score_msg, (x, y))
+#************ end of 'drawScore' method *********************
+
+#***********************************************************#
+# This method draws how many lives the user has left.       #
+#***********************************************************#
+def drawLives(screen, font, livesCount):
+    lives_color = (0, 0, 0)
+    lives_str = ''
+    for i in range(livesCount):
+        lives_str += 'X'
+
+    lives_msg = font.render('Lives:{}'.format(lives_str), True, lives_color)
+    x = 40
+    y = 66
+    screen.blit(lives_msg, (x, y))
+#************ end of 'drawLives' method *********************
+
+#***********************************************************#
+# This method will draw the game over message on the screen #
+#***********************************************************#
+def drawGameOver(screen, font):
+    game_over_color = (0, 0, 0)
+    game_over_msg = font.render('Game Over', True, game_over_color)
+    x = (display_width / 2) - 300
+    y = (display_height / 2) - 255
+    screen.blit(game_over_msg, (x, y))
+#************ end of 'drawGameOver' method ******************
+
+#***********************************************************#
+# This method draws the delta T between frames.             #
+#***********************************************************#
+def drawFps(screen, font, deltaT):
+    fps_color = (0, 0, 0)
+    fps_msg = font.render('{}'.format(deltaT), True, fps_color)
+    x = 40
+    y = 107
+    screen.blit(fps_msg, (x, y))
+#************ end of 'drawFps' method **********************
 
 #***********************************************************#
 # This is the method that will update the coordinates of    #
@@ -58,12 +106,13 @@ def updateKoala(prevX, direction):
 # coconut.                                                  #
 #***********************************************************#
 def updateCoconut(prevX, prevY):
-    # initialize an array
+    # initialize a list
     result = [prevX, prevY]
 
     # check if off the screen
     if(prevY < display_height):
-        result[1] += 35
+        # If you update this, update the collision check
+        result[1] += 35 
     else:
         # need random math for x movement
         # result[0] = 0
@@ -83,30 +132,24 @@ def updateCoconut(prevX, prevY):
 # will take in 3 integers.  The X and Y coordinates of the  #
 # coconut.  And the X coordinate of the koala.              #
 #***********************************************************#
-
-
 def collisionCheck(cx, cy, kx):
-    if(cy < (display_height - 125)):
+    koala_top = display_height - 125
+    if(cy < koala_top):
         return False
     elif(cx >= kx):
         if(cx <= (kx + 125)):
-            return True
+            # only return true on the first collision
+            if (cy >= koala_top and cy < koala_top + 35):
+                # TODO update if the speed of the coconut is 
+                # ever changed
+                return True
+            else:
+                return False
         else:
             return False
     else:
         return False
 #******* End of the 'collisionCheck' method *****************
-
-#***********************************************************#
-# This is the method that will handle when a colision has   #
-# occured.                                                  #
-#***********************************************************#
-
-
-def handleColision():
-    sound.play()
-#******* End of the 'handleColision' method *****************
-
 
 #***********************************************************#
 # This is the main method.  It will contain the game loop.  #
@@ -125,6 +168,8 @@ def main():
 
     # frame rate
     fps = 35
+    # for capturing the time delta
+    delta_t = 0
     # clocks
     clock = pygame.time.Clock()
 
@@ -136,15 +181,27 @@ def main():
     global is_paused
     is_paused = False
 
+    # keep track of the score
+    score = 0
+    # keep track of the lives
+    life_count = 10  # TODO update some day?
+    # for keeping track of if the score needs updated
+    is_koala_hit = False
+
     # initializing the main character
-    koala = pygame.image.load("Killer-koala.png").convert_alpha()
+    koala = pygame.image.load("Killer-koala.png").convert_alpha() # 125 x 125
     # initializing the coconut
-    coconut = pygame.image.load("coconut.png").convert_alpha()
+    coconut = pygame.image.load("coconut.png").convert_alpha() # 82 x 82
     # initializing the background
     background = pygame.image.load("jungle-palm-trees.png").convert()
 
-    # initializing the paused font
+    # initializing fonts
     pause_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
+    game_over_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
+    score_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+    lives_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+    fps_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+
 
     # cooridinates
     kx = 600    # koala x
@@ -152,19 +209,17 @@ def main():
     cx = 400    # coconut x
     cy = 0      # coconut y
 
-    # color?
-    white = [255, 255, 255]
-
     # start the theme song and loop it
     pygame.mixer.music.play(-1)
 
     # game loop
     while(running):
-
         # check for collisions
-        if(collisionCheck(cx, cy, kx)):
-            sound.play()
-            # handleColision()
+        if life_count > 0:
+            if(collisionCheck(cx, cy, kx)):
+                sound.play()
+                life_count = life_count - 1
+                is_koala_hit = True
 
         # handling game events
         for event in pygame.event.get():
@@ -184,13 +239,13 @@ def main():
                     if(event.key == pygame.K_RIGHT):
                         kx = updateKoala(kx, 35)
                 # Check if they want to pause the game
-                if(event.key == pygame.K_SPACE):
+                if(event.key == pygame.K_SPACE and life_count > 0):
                     togglePause(pygame.mixer.music)
                 # Check if they want to quit the game
                 if(event.key == pygame.K_ESCAPE):
                     running = False
 
-        if is_paused is False:
+        if is_paused is False and life_count > 0:
             # screen.fill(white)
             screen.blit(background, (0, 0))
             # draw the koala to the screen
@@ -202,17 +257,37 @@ def main():
             cy = coconutCoords[1]
             # draw the coconut to the screen
             screen.blit(coconut, (cx, cy))
-        else:
+
+            # check if the score should increment
+            if (cy == 0):
+                if is_koala_hit is False:
+                    score = score + 1
+                # reset the koala hit flag
+                is_koala_hit = False
+        elif is_paused is False and life_count == 0:
+            # check if the game is over
+            drawGameOver(screen, game_over_font)
+            pygame.mixer.music.pause()
+            # Do not create a tightly wound loop 
+            # and bind the cpu
+            time.sleep(0.1)
+        elif is_paused is True:
             # draw the paused message
             displayPaused(screen, pause_font)
             # Do not create a tightly wound loop 
             # and bind the cpu
             time.sleep(0.1)
 
+        # draw the player's score
+        drawScore(screen, score_font, score)
+        # draw the lives
+        drawLives(screen, lives_font, life_count)
+        # drawFps(screen, fps_font, delta_t) # More like draw delta_t    
+
         # update the screen
         pygame.display.update()
         # increment the clock
-        clock.tick(fps)
+        delta_t = clock.tick(fps)
 
 #**************** end of 'main' ****************************
 
