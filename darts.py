@@ -27,6 +27,17 @@ def togglePause(music):
 #************ end of 'togglePause' method *******************
 
 #***********************************************************#
+# This method will draw the paused message on the screen.   #
+#***********************************************************#
+def displayPaused(screen, font):
+    pause_color = (0, 0, 0)
+    pause_msg = font.render('Paused', True, pause_color)
+    x = (display_width / 2) - 200
+    y = (display_height / 2) - 255
+    screen.blit(pause_msg, (x, y))
+#************ end of 'displayPaused' method ******************    
+
+#***********************************************************#
 # This is the method that will update the coordinates of    #
 # Koala.  It will also do bounds checking to keep the koala #
 # on the screen.                                            #
@@ -132,6 +143,9 @@ def main():
     # initializing the background
     background = pygame.image.load("jungle-palm-trees.png").convert()
 
+    # initializing the paused font
+    pause_font = pygame.font.Font("AmaticSC-Regular.ttf", 225)
+
     # cooridinates
     kx = 600    # koala x
     ky = display_height - 125    # koala y
@@ -189,6 +203,8 @@ def main():
             # draw the coconut to the screen
             screen.blit(coconut, (cx, cy))
         else:
+            # draw the paused message
+            displayPaused(screen, pause_font)
             # Do not create a tightly wound loop 
             # and bind the cpu
             time.sleep(0.1)
