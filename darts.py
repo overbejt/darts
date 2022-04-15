@@ -9,6 +9,10 @@ display_height = 647
 global is_paused 
 is_paused = False
 
+#***********************************************************#
+# This method is responsible for puase/unpuase of the game. #
+# It will also pause/unpause the audio for the game.        #
+#***********************************************************#
 def togglePause(music):
     # TODO put a pause message on the screen
     global is_paused
@@ -19,14 +23,13 @@ def togglePause(music):
         music.pause()
     else:
         music.unpause()
+#************ end of 'togglePause' method *******************
 
 #***********************************************************#
 # This is the method that will update the coordinates of    #
 # Koala.  It will also do bounds checking to keep the koala #
 # on the screen.                                            #
 #***********************************************************#
-
-
 def updateKoala(prevX, direction):
     result = prevX + direction
     if(result < 0):
