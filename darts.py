@@ -1,6 +1,7 @@
 import pygame
 import random
 import time 
+import sys
 
 print("so far so good!")
 
@@ -10,12 +11,19 @@ display_height = 647
 global is_paused 
 is_paused = False
 
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+# Reserved Btn Keywords
+PLAY_AGAIN_BTN = 'playAgain'
+QUIT_BTN = 'quit'
+
 #***********************************************************#
 # This method is responsible for puase/unpuase of the game. #
 # It will also pause/unpause the audio for the game.        #
 #***********************************************************#
 def togglePause(music):
-    # TODO put a pause message on the screen
     global is_paused
     is_paused = not is_paused
 
@@ -30,8 +38,7 @@ def togglePause(music):
 # This method will draw the paused message on the screen.   #
 #***********************************************************#
 def displayPaused(screen, font):
-    pause_color = (0, 0, 0)
-    pause_msg = font.render('Paused', True, pause_color)
+    pause_msg = font.render('Paused', True, BLACK)
     x = (display_width / 2) - 200
     y = (display_height / 2) - 255
     screen.blit(pause_msg, (x, y))
@@ -41,8 +48,7 @@ def displayPaused(screen, font):
 # This method draws the users score.                        #
 #***********************************************************#
 def drawScore(screen, font, score):
-    score_color = (0, 0, 0)
-    score_msg = font.render("Score: {}".format(score), True, score_color)
+    score_msg = font.render("Score: {}".format(score), True, BLACK)
     x = 40
     y = 25
     screen.blit(score_msg, (x, y))
@@ -52,12 +58,11 @@ def drawScore(screen, font, score):
 # This method draws how many lives the user has left.       #
 #***********************************************************#
 def drawLives(screen, font, livesCount):
-    lives_color = (0, 0, 0)
     lives_str = ''
     for i in range(livesCount):
         lives_str += 'X'
 
-    lives_msg = font.render('Lives:{}'.format(lives_str), True, lives_color)
+    lives_msg = font.render('Lives:{}'.format(lives_str), True, BLACK)
     x = 40
     y = 66
     screen.blit(lives_msg, (x, y))
@@ -66,9 +71,8 @@ def drawLives(screen, font, livesCount):
 #***********************************************************#
 # This method will draw the game over message on the screen #
 #***********************************************************#
-def drawGameOver(screen, font):
-    game_over_color = (0, 0, 0)
-    game_over_msg = font.render('Game Over', True, game_over_color)
+def drawGameOver(pygame, screen, font):
+    game_over_msg = font.render('Game Over', True, BLACK)
     x = (display_width / 2) - 300
     y = (display_height / 2) - 255
     screen.blit(game_over_msg, (x, y))
@@ -78,12 +82,43 @@ def drawGameOver(screen, font):
 # This method draws the delta T between frames.             #
 #***********************************************************#
 def drawFps(screen, font, deltaT):
-    fps_color = (0, 0, 0)
-    fps_msg = font.render('{}'.format(deltaT), True, fps_color)
+    fps_msg = font.render('{}'.format(deltaT), True, BLACK)
     x = 40
     y = 107
     screen.blit(fps_msg, (x, y))
 #************ end of 'drawFps' method **********************
+
+#***********************************************************#
+# This method draws the play again button.  It returns the  #
+# rect so that I can check if the user clicks on it         #
+#***********************************************************#
+def drawPlayAgainBtn(pygame, screen, font):
+    play_again_msg = font.render('Play Again', True, WHITE)
+    w = 125
+    h = 50
+    x = (display_width / 2) - (w / 2)
+    y = (display_height / 2) + 20
+    padding_left = 8
+    btn = pygame.draw.rect(screen, BLACK, (x, y, w, h))
+    screen.blit(play_again_msg, (x + padding_left, y))
+    return btn
+#************ end of 'drawQuitBtn' method *******************
+
+#***********************************************************#
+# This method draws the quit button.  It returns the rect   #
+# so that I can check if the user clicks on it.             #
+#***********************************************************#
+def drawQuitBtn(pygame, screen, font):
+    play_again_msg = font.render('Quit', True, WHITE)
+    w = 125
+    h = 50
+    x = (display_width / 2) - (w / 2)
+    y = (display_height / 2) + (20 + h + 10)
+    padding_left = 40
+    btn = pygame.draw.rect(screen, BLACK, (x, y, w, h))
+    screen.blit(play_again_msg, (x + padding_left, y))
+    return btn
+#************ end of 'drawQuitBtn' method *******************
 
 #***********************************************************#
 # This is the method that will update the coordinates of    #
@@ -99,7 +134,6 @@ def updateKoala(prevX, direction):
     else:
         return result
 #************ end of 'updateKoala' method *******************
-
 
 #***********************************************************#
 # This is the method that will update to coordinates of a   #
@@ -152,6 +186,25 @@ def collisionCheck(cx, cy, kx):
 #******* End of the 'collisionCheck' method *****************
 
 #***********************************************************#
+# mx is the mouse x, my is the mouse y.  The btn is a       #
+# pygame Rect object.                                       #
+#***********************************************************#
+def btnClicked(mx, my, btn):
+    btn_clicked = False
+
+    # for readability
+    btn_left = btn.midleft[0]
+    btn_right = btn.midright[0]
+    btn_top = btn.midtop[1]
+    btn_bottom = btn.midbottom[1]
+
+    if(mx >= btn_left and mx <= btn_right):
+        if(my >= btn_top and my <= btn_bottom):
+            btn_clicked = True
+    return btn_clicked
+#******* End of the 'btnClicked' method *********************
+
+#***********************************************************#
 # This is the main method.  It will contain the game loop.  #
 # It will also check and handle all of the events from      #
 # pygame.                                                   #
@@ -201,6 +254,11 @@ def main():
     score_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
     lives_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
     fps_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+    play_again_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+    quit_font = pygame.font.Font("AmaticSC-Bold.ttf", 36)
+
+    # keeping all the buttons in one place
+    buttons = { }
 
 
     # cooridinates
@@ -242,11 +300,24 @@ def main():
                 if(event.key == pygame.K_SPACE and life_count > 0):
                     togglePause(pygame.mixer.music)
                 # Check if they want to quit the game
-                if(event.key == pygame.K_ESCAPE):
-                    running = False
+                if(event.key == pygame.K_ESCAPE):                    
+                    sys.exit()
+            # Check if the player left clicked a button 
+            if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+                mx, my = pygame.mouse.get_pos()
+                if (life_count == 0):
+                    # Check if they want to play again
+                    if buttons[PLAY_AGAIN_BTN] is not None:
+                        if(btnClicked(mx, my, buttons[PLAY_AGAIN_BTN])):
+                            del buttons[PLAY_AGAIN_BTN]
+                            main() # Restart
+                    # Check if they want to quit
+                    if buttons[QUIT_BTN] is not None:
+                        if(btnClicked(mx, my, buttons[QUIT_BTN])):                        
+                            sys.exit()
+
 
         if is_paused is False and life_count > 0:
-            # screen.fill(white)
             screen.blit(background, (0, 0))
             # draw the koala to the screen
             screen.blit(koala, (kx, ky))
@@ -266,7 +337,9 @@ def main():
                 is_koala_hit = False
         elif is_paused is False and life_count == 0:
             # check if the game is over
-            drawGameOver(screen, game_over_font)
+            drawGameOver(pygame, screen, game_over_font)
+            buttons[PLAY_AGAIN_BTN] = drawPlayAgainBtn(pygame, screen, play_again_font)
+            buttons[QUIT_BTN] = drawQuitBtn(pygame, screen, quit_font)
             pygame.mixer.music.pause()
             # Do not create a tightly wound loop 
             # and bind the cpu
