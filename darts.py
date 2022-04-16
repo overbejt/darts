@@ -350,7 +350,8 @@ def main():
                             life_count = LIFE_COUNT_INIT
                             score = 0
                             countdown = COUNTDOWN_INIT
-                            pygame.mixer.music.play(-1)                            
+                            pygame.mixer.music.rewind()
+                            pygame.mixer.music.play(-1)                                                 
                     # Check if they want to quit
                     if buttons[QUIT_BTN] is not None:
                         if(btnClicked(mx, my, buttons[QUIT_BTN])):                        
@@ -383,7 +384,7 @@ def main():
             drawGameOver(screen, game_over_font)
             buttons[PLAY_AGAIN_BTN] = drawPlayAgainBtn(pygame, screen, play_again_font)
             buttons[QUIT_BTN] = drawQuitBtn(pygame, screen, quit_font)
-            pygame.mixer.music.pause()
+            pygame.mixer.music.stop()
             # Do not create a tightly wound loop 
             # and bind the cpu
             time.sleep(0.1)
