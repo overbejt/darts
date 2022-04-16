@@ -330,7 +330,7 @@ def main():
                     if(event.key == pygame.K_RIGHT):
                         kx = updateKoala(kx, 35)
                 # Check if they want to pause the game
-                if(event.key == pygame.K_SPACE and life_count > 0):
+                if(event.key == pygame.K_SPACE and life_count > 0 and countdown == 0):
                     togglePause(pygame.mixer.music)
                 # Check if they want to quit the game
                 if(event.key == pygame.K_ESCAPE):                    
